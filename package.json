@@ -1,5 +1,5 @@
 {
-  "name": "svelte-slideshow-animation",
+  "name": "svelte-tailwind-image-carousel",
   "version": "0.0.1",
   "scripts": {
     "dev": "svelte-kit dev",
@@ -13,6 +13,7 @@
   "devDependencies": {
     "@faker-js/faker": "^6.0.0",
     "@sveltejs/adapter-auto": "next",
+    "@sveltejs/adapter-netlify": "^1.0.0-next.51",
     "@sveltejs/kit": "next",
     "autoprefixer": "^10.4.4",
     "postcss": "^8.4.12",
