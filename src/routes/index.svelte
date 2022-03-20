@@ -5,6 +5,7 @@
     import {Circle3 as Loader} from "svelte-loading-spinners";
 
     let demoImages: CarouselImage[] = []
+    let isLoading: boolean
     $: isLoading = demoImages.length <= 0
     const imagesCount = 10
     const ratio = '3/2'

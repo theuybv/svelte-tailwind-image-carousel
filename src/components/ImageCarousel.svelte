@@ -92,9 +92,9 @@
         e.stopPropagation()
         const {nextInToView} = getThumbsIterator()
         if (nextInToView) {
-            nextInToView.element.scrollIntoView({
-                behavior: "smooth",
-                block: "nearest",
+            _thumbsContainer.scrollTo({
+                left: _thumbsContainer.scrollLeft + nextInToView.element.offsetWidth + 8,
+                behavior: "smooth"
             })
         }
     }
@@ -104,9 +104,9 @@
         const {prevInToView} = getThumbsIterator()
 
         if (prevInToView) {
-            prevInToView.element.scrollIntoView({
-                behavior: "smooth",
-                block: "nearest",
+            _thumbsContainer.scrollTo({
+                left: _thumbsContainer.scrollLeft - prevInToView.element.offsetWidth - 8,
+                behavior: "smooth"
             })
         }
     }
@@ -116,14 +116,14 @@
         const {lastInView, nextInToView, prevInToView, firstInView} = getThumbsIterator()
 
         if (lastInView.element === e.currentTarget && nextInToView) {
-            nextInToView.element.scrollIntoView({
-                behavior: "smooth",
-                block: "nearest",
+            _thumbsContainer.scrollTo({
+                left: _thumbsContainer.scrollLeft + nextInToView.element.offsetWidth + 8,
+                behavior: "smooth"
             })
         } else if (firstInView.element === e.currentTarget && prevInToView) {
-            prevInToView.element.scrollIntoView({
-                behavior: "smooth",
-                block: "nearest",
+            _thumbsContainer.scrollTo({
+                left: _thumbsContainer.scrollLeft - prevInToView.element.offsetWidth - 8,
+                behavior: "smooth"
             })
         }
         currentImage = {
