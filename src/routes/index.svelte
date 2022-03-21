@@ -96,7 +96,9 @@
           </div>
         {:else}
           <div class='mockup-window border bg-base-300 p-4'>
-            <ImageCarousel images={demoImages} {...carousel} />
+            <div class='flex-none md:flex md:justify-center '>
+              <ImageCarousel images={demoImages} {...carousel} />
+            </div>
           </div>
         {/if}
         <CarouselStats stats={demoCarousels[index]} />
