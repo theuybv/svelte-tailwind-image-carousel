@@ -1,61 +1,60 @@
 <script lang='ts'>
   import ImageCarousel from '../components/ImageCarousel.svelte'
-  import { AspectRatio, type CarouselImage, getDemoImages } from '../data'
+  import { AspectRatio, getDemoImages } from '../data'
   import { onMount } from 'svelte'
   import { Circle3 as Loader } from 'svelte-loading-spinners'
   import CarouselStats from '../components/CarouselStats.svelte'
   import type { DemoCarousel } from '../types'
 
-  let demoImages: CarouselImage[] = []
-  let isLoading: boolean
-  $: isLoading = demoImages.length <= 0
-  const imagesCount = 10
-  const ratio = '3/2'
-  const sourceImageAspectRatio: AspectRatio = AspectRatio[ratio]
-  let _lightTheme: boolean = false
-
   const demoCarousels: DemoCarousel[] = [
     {
       display: 'window',
-      sourceImageAspectRatio: ratio,
+      sourceImageAspectRatio: '1/1',
       carouselImageAspectRatio: '3/2',
       thumbnailAspectRatio: '4/3',
       thumbsPerView: 6,
       imageMaxHeight: 600,
-      imagesCount,
+      imagesCount: 10,
     },
     {
       display: 'phone',
-      sourceImageAspectRatio: ratio,
+      sourceImageAspectRatio: '3/2',
       carouselImageAspectRatio: '4/3',
       thumbnailAspectRatio: '1/1',
       thumbsPerView: 4,
       imageMaxHeight: 400,
-      imagesCount,
+      imagesCount: 20,
     },
     {
       display: 'phone',
-      sourceImageAspectRatio: ratio,
-      carouselImageAspectRatio: '1/1',
+      sourceImageAspectRatio: '3/2',
+      carouselImageAspectRatio: '3/2',
       thumbnailAspectRatio: '3/2',
       thumbsPerView: 3,
       imageMaxHeight: 300,
-      imagesCount,
+      imagesCount: 10,
     },
   ]
 
+  let _lightTheme: boolean = false
+  let _isLoading: boolean = true
+  let _demoImages = demoCarousels.map((value) => {
+    return getDemoImages(value.imagesCount, AspectRatio[value.sourceImageAspectRatio])
+  })
+  let _imagesLoadPromises = _demoImages.map((value, index) => fetch(value[index].imageSrc))
 
   onMount(async () => {
-    demoImages = await Promise.all(getDemoImages(imagesCount, sourceImageAspectRatio))
+    await Promise.all(_imagesLoadPromises)
+    _isLoading = false
   })
 
 </script>
 
 
-{#if isLoading}
+{#if _isLoading}
   <div class='flex flex-col justify-center items-center w-[100vw] h-[100vh] gap-1'>
     <h1 class='text-1xl'>please wait...</h1>
-    <Loader size='60'  unit='px' duration='1s' />
+    <Loader size='60' unit='px' duration='1s' />
   </div>
 {:else}
   <div class='p-6' data-theme={_lightTheme === true ? 'light' : 'black'}>
@@ -90,14 +89,17 @@
             <div class='camera'></div>
             <div class='display'>
               <div class='artboard artboard-demo phone-1'>
-                <ImageCarousel images={demoImages} {...carousel} />
+                <ImageCarousel
+                  images={_demoImages[index]}
+                  {...carousel} />
               </div>
             </div>
           </div>
         {:else}
           <div class='mockup-window border bg-base-300 p-4'>
             <div class='flex-none md:flex md:justify-center '>
-              <ImageCarousel images={demoImages} {...carousel} />
+              <ImageCarousel images={_demoImages[index]}
+                             {...carousel} />
             </div>
           </div>
         {/if}
